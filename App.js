@@ -33,7 +33,19 @@
 // console.log("listening on port 3000");
 const express = require("express");
 const app = express();
+const morgan = requrie("morgan");
+const helmet = require("helmet");
+const logger = require("./logger");
 app.use(express.json());
+app.use(express.urlencoded());
+app.use(express.static("public"));
+app.use(helmet());
+app.use(morgan("tiny"));
+app.use(logger);
+app.use(function (req, res, next) {
+  console.log("authenticating");
+  next();
+});
 const courses = [
   {
     id: 1,
